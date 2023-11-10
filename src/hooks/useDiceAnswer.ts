@@ -10,16 +10,17 @@ export const useDiceAnswer = (x: number, y: number) => {
    **/
 
   let matrixY = Matrix.getRotationY(y * 90);
-  let matrixX = Matrix.getRotationX(x * 90);
+  let matrixX = Matrix.getRotationX(x * -90);
 
   const sceneVertices = [];
   const out = [];
 
+  // TODO getSceneVertices
   for (let i = 0; i < vertices.length; i++) {
     let vertex = Matrix.multiplyVector(matrixY, vertices[i]);
     sceneVertices.push(vertex);
   }
-
+  // TODO getOut
   for (let i = 0; i < sceneVertices.length; i++) {
     let vertex = Matrix.multiplyVector(matrixX, sceneVertices[i]);
     out.push(vertex);
