@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useEffect } from "react";
 import { useRef, useState } from "react";
 import * as S from "./Dice.styled";
 import { useDiceAnswer } from "../../../hooks/useDiceAnswer";
@@ -8,6 +8,7 @@ interface IDiceProps {}
 
 export const Dice: React.FC<IDiceProps> = ({}) => {
   const cubeRef = useRef<HTMLDivElement>(null);
+
   const [xFlipCount, setXFlipCount] = useState(0);
   const [yFlipCount, setYFlipCount] = useState(0);
 

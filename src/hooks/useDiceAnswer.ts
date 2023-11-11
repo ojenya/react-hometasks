@@ -2,56 +2,42 @@ import { useMemo } from "react";
 import { cube, vertices } from "../consts";
 import Matrix from "../components/Matrix/Matrix";
 import { getCheckCoords } from "../utils/getCheckCoords";
+import Vector from "../components/Vector/Vector";
 
 export const useDiceAnswer = (x: number, y: number) => {
-  /**
-   * На сколько поворачивать по горизонтали слева направо
-   * На сколько поворачивать по вертикали сверху вних
-   **/
+  const matrixY = Matrix.getRotationY(y * 90);
+  const matrixX = Matrix.getRotationX(x * -90);
 
-  let matrixY = Matrix.getRotationY(y * 90);
-  let matrixX = Matrix.getRotationX(x * -90);
+  const sceneVertices: Vector[] = vertices
+    ?.map((vertice) => Matrix.multiplyVector(matrixY, vertice))
+    ?.map((sceneVertice) => Matrix.multiplyVector(matrixX, sceneVertice));
 
-  const sceneVertices = [];
-  const out = [];
-
-  // TODO getSceneVertices
-  for (let i = 0; i < vertices.length; i++) {
-    let vertex = Matrix.multiplyVector(matrixY, vertices[i]);
-    sceneVertices.push(vertex);
-  }
-  // TODO getOut
-  for (let i = 0; i < sceneVertices.length; i++) {
-    let vertex = Matrix.multiplyVector(matrixX, sceneVertices[i]);
-    out.push(vertex);
-  }
-
-  const r = getCheckCoords(cube, out);
+  const result = getCheckCoords(cube, sceneVertices);
 
   const isOne = [
-    r.includes(1),
-    r.includes(4),
-    r.includes(5),
-    r.includes(8),
+    result.includes(1),
+    result.includes(4),
+    result.includes(5),
+    result.includes(8),
   ].every(Boolean);
 
-  const sumOfVertices = r?.reduce((acc, cur) => (acc += cur), 0);
+  const sumOfVertices = result?.reduce((acc, cur) => (acc += cur), 0);
 
   return useMemo(() => {
     if (isOne) {
-      return "one";
+      return 1;
     } else {
       switch (sumOfVertices) {
         case 26:
-          return "six";
+          return 6;
         case 10:
-          return "five";
+          return 5;
         case 14:
-          return "four";
+          return 4;
         case 22:
-          return "three";
+          return 3;
         case 18:
-          return "two";
+          return 2;
       }
     }
   }, [x, y, sumOfVertices]);

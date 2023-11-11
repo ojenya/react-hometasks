@@ -1,6 +1,6 @@
 import Vector from "../components/Vector/Vector";
 
-export function getCheckCoords(cube: Vector[][], vectors: any[]) {
+export function getCheckCoords(cube: Vector[][], vectors: Vector[]) {
   const result = [];
   for (let i = 0; i < vectors.length; i++) {
     const t = vectors[i].getCoords().map(Math.round);
